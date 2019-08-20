@@ -18,58 +18,60 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Hero(
-              tag: "logo_transition",
-              child: Container(
-                height: 200.0,
-                child: Image.asset('images/logo.png'),
-              ),
-            ),
-            SizedBox(
-              height: 48.0,
-            ),
-            /**
-             * Email TextField(EditText)
-             */
-            TextField(
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.emailAddress,
-              onChanged: (value) {
-                _email = value;
-              },
-              decoration: kTextFieldDecoration.copyWith(
-                hintText: "Enter Your Email",
-              ),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            /**
-             * Password TextField(EditText)
-             */
-            TextField(
-              textAlign: TextAlign.center,
-              obscureText: true,
-              onChanged: (value) {
-                _password = value;
-              },
-              decoration: kTextFieldDecoration.copyWith(
-                  hintText: "Enter Your Password"),
-            ),
-            SizedBox(
-              height: 24.0,
-            ),
-            RoundedButton(
-              buttonNameText: "Register",
-              colour: Colors.blueAccent,
-              onClick: () {
-                print("Email : $_email Password: $_password");
-              },
-            )
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Hero(
+                  tag: "logo_transition",
+                  child: Container(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
+                  ),
+                ),
+                SizedBox(
+                  height: 48.0,
+                ),
+                /**
+                 * Email TextField(EditText)
+                 */
+                TextField(
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (value) {
+                    _email = value;
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: "Enter Your Email",
+                  ),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                /**
+                 * Password TextField(EditText)
+                 */
+                TextField(
+                  textAlign: TextAlign.center,
+                  obscureText: true,
+                  onChanged: (value) {
+                    _password = value;
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: "Enter Your Password"),
+                ),
+                SizedBox(
+                  height: 24.0,
+                ),
+                RoundedButton(
+                  buttonNameText: "Register",
+                  colour: Colors.blueAccent,
+                  onClick: () {
+                    print("Email : $_email Password: $_password");
+                  },
+                )
 //            Padding(
 //              padding: EdgeInsets.symmetric(vertical: 16.0),
 //              child: Material(
@@ -89,7 +91,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 //                ),
 //              ),
 //            ),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );
