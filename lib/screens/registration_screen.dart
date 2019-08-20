@@ -10,6 +10,8 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  String _email;
+  String _password;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,11 +36,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
              * Email TextField(EditText)
              */
             TextField(
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
-                //TODO Do something with the user input.
+                _email = value;
               },
               decoration: kTextFieldDecoration.copyWith(
-                  hintText: "Enter Your Email Here"),
+                hintText: "Enter Your Email",
+              ),
             ),
             SizedBox(
               height: 8.0,
@@ -47,11 +52,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
              * Password TextField(EditText)
              */
             TextField(
+              textAlign: TextAlign.center,
+              obscureText: true,
               onChanged: (value) {
-                //TODO Do something with the user input.
+                _password = value;
               },
               decoration: kTextFieldDecoration.copyWith(
-                  hintText: "Enter Your Password Here"),
+                  hintText: "Enter Your Password"),
             ),
             SizedBox(
               height: 24.0,
@@ -59,7 +66,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             RoundedButton(
               buttonNameText: "Register",
               colour: Colors.blueAccent,
-              onClick: () {},
+              onClick: () {
+                print("Email : $_email Password: $_password");
+              },
             )
 //            Padding(
 //              padding: EdgeInsets.symmetric(vertical: 16.0),

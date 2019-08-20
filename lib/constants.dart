@@ -7,7 +7,10 @@ const kSendButtonTextStyle = TextStyle(
 );
 
 const kTextFieldDecoration = InputDecoration(
-  hintText: 'Type your hint message here...',
+  helperStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+  labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+  hintText: '{Type your hint message here...}',
+  hintStyle: TextStyle(color: Colors.black),
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
