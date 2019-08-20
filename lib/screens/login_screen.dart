@@ -1,7 +1,9 @@
+import 'package:flash_chat/components/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String route = "LOGIN_SCREEN";
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -79,24 +81,29 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 24.0,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    //Implement login functionality.
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Log In',
-                  ),
-                ),
-              ),
+            RoundedButton(
+              buttonNameText: "Log In",
+              colour: Colors.lightBlueAccent,
+              onClick: () {},
             ),
+//            Padding(
+//              padding: EdgeInsets.symmetric(vertical: 16.0),
+//              child: Material(
+//                color: Colors.lightBlueAccent,
+//                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+//                elevation: 5.0,
+//                child: MaterialButton(
+//                  onPressed: () {
+//                    //Implement login functionality.
+//                  },
+//                  minWidth: 200.0,
+//                  height: 42.0,
+//                  child: Text(
+//                    'Log In',
+//                  ),
+//                ),
+//              ),
+//            ),
           ],
         ),
       ),
