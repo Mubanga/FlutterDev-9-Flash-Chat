@@ -135,25 +135,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return RoundedButton(
       buttonNameText: "Register",
       colour: Colors.blueAccent,
-      onClick: () async {
-        try {
-          // Fire And Forget And Let The FutureBuilder Do It's Thing
-          _firebaseAuthFuture = _auth.createUserWithEmailAndPassword(
-              email: _email, password: _password);
-          print("RegisterButton: $_firebaseAuthFuture ");
-          setState(() {
-          });
-          final createdClient = await _firebaseAuthFuture;
-          _firebaseAuthFuture.then((onValue) {
-            print("-----> ChatScreen().route");
-            Navigator.pushReplacementNamed(context, ChatScreen.route);
-          });
-        } catch (e) {
-          print("Exception ERROR: $e");
-          _ErrorAlert(context, e.toString(), WelcomeScreen.route);
-        }
-      },
+      onClick: _RegisterUser,
     );
+  }
+
+  void _RegisterUser() async {
+    try {
+      // Fire And Forget And Let The FutureBuilder Do It's Thing
+      _firebaseAuthFuture = _auth.createUserWithEmailAndPassword(
+          email: _email, password: _password);
+      print("RegisterButton: $_firebaseAuthFuture ");
+      setState(() {});
+      final createdClient = await _firebaseAuthFuture;
+      _firebaseAuthFuture.then((onValue) {
+        print("-----> ChatScreen().route");
+        Navigator.pushReplacementNamed(context, ChatScreen.route);
+      });
+    } catch (e) {
+      print("Exception ERROR: $e");
+      _ErrorAlert(context, e.toString(), WelcomeScreen.route);
+    }
   }
 
   Future<void> _ErrorAlert(
