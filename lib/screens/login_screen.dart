@@ -16,55 +16,58 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Hero(
-              tag: "logo_transition",
-              child: Container(
-                height: 200.0,
-                child: Image.asset('images/logo.png'),
-              ),
-            ),
-            SizedBox(
-              height: 48.0,
-            ),
-            /**
-             * Email TextField(EditText)
-             */
-            TextField(
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.emailAddress,
-              onChanged: (value) {
-                //Do something with the user input.
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: "Enter Your Email"),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            /**
-             * Password TextField(EditText)
-             */
-            TextField(
-              textAlign: TextAlign.center,
-              obscureText: true,
-              onChanged: (value) {
-                //Do something with the user input.
-              },
-              decoration: kTextFieldDecoration.copyWith(
-                  hintText: "Enter Your Password"),
-            ),
-            SizedBox(
-              height: 24.0,
-            ),
-            RoundedButton(
-              buttonNameText: "Log In",
-              colour: Colors.lightBlueAccent,
-              onClick: () {},
-            ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Hero(
+                  tag: "logo_transition",
+                  child: Container(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
+                  ),
+                ),
+                SizedBox(
+                  height: 48.0,
+                ),
+                /**
+                 * Email TextField(EditText)
+                 */
+                TextField(
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (value) {
+                    //Do something with the user input.
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: "Enter Your Email"),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                /**
+                 * Password TextField(EditText)
+                 */
+                TextField(
+                  textAlign: TextAlign.center,
+                  obscureText: true,
+                  onChanged: (value) {
+                    //Do something with the user input.
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: "Enter Your Password"),
+                ),
+                SizedBox(
+                  height: 24.0,
+                ),
+                RoundedButton(
+                  buttonNameText: "Log In",
+                  colour: Colors.lightBlueAccent,
+                  onClick: () {},
+                ),
 //            Padding(
 //              padding: EdgeInsets.symmetric(vertical: 16.0),
 //              child: Material(
@@ -83,7 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
 //                ),
 //              ),
 //            ),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );
