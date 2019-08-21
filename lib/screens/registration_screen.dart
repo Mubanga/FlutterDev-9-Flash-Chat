@@ -17,10 +17,8 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
   Future<AuthResult> _firebaseAuthFuture;
-  Future<bool> _registrationComplete = Future<bool>.value(false);
   String _email;
   String _password;
-  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,43 +40,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               print("Error");
               return Text(snapshot.error.toString());
             }
-//            Completer<bool> registrationCompleter = Completer();
-//            registrationCompleter.complete(true);
-//            print(
-//                "registrationCompleter == ${registrationCompleter.isCompleted}");
-//            _registrationComplete = registrationCompleter.future;
-//            print("FRegCompleter == ${_registrationComplete}");
-//            // return ChatScreen();
           } else {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
-
-//          return snapshot.hasData
-//              ? ChatScreen()
-//              : Center(child: CircularProgressIndicator());
-          //registrationCompleter.future;
-          //  Navigator.of(context).pushReplacementNamed(ChatScreen.route);
-          // Navigator.of(context).pushNamed(ChatScreen.route);
-          //  return ChatScreen();
         } else if (snapshot.connectionState == ConnectionState.none) {
           print("ConnectionState = NONE, BuildingRegisterMainBody");
           return _buildRegisterMainBody();
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           print("Attempting To Register User ConnectionState = WAITING");
-//          return Center(
-//            child: CircularProgressIndicator(),
-//          );
         }
-//        if (snapshot.hasData) {
-//          print("Future Has Data");
-//        } else {
-//          print("Future Has No Data");
-//        }
-//        return snapshot.hasData
-//            ? CircularProgressIndicator()
-//            : _buildRegisterMainBody();
         if (snapshot.error != null) {
           print("Error");
           return Center(
@@ -87,12 +59,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
           );
         }
-        return _buildResisterIsLoading();
+        return _buildRegisterIsLoading();
       },
     );
   }
 
-  Center _buildResisterIsLoading() {
+  Center _buildRegisterIsLoading() {
     return Center(
       child: CircularProgressIndicator(),
     );
@@ -164,26 +136,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       buttonNameText: "Register",
       colour: Colors.blueAccent,
       onClick: () async {
-        // Fire And Forget And Let The FutureBuilder Do It's Thing
         try {
+          // Fire And Forget And Let The FutureBuilder Do It's Thing
           _firebaseAuthFuture = _auth.createUserWithEmailAndPassword(
               email: _email, password: _password);
-          // _isLoading = await _registrationComplete;
-          //        _registrationComplete.then((onValue) {
-          //          _isLoading = onValue;
-          //          print("_isLoading == $_isLoading");
-          //        });
           print("RegisterButton: $_firebaseAuthFuture ");
           setState(() {
-            //          if (_isLoading) {
-            //            Navigator.of(context).pushNamed(ChatScreen.route);
-            //          }
-            //          _registrationComplete.then((isLoading) {
-            //            print("RegIsLoading == $isLoading");
-            //            if (isLoading == true) {
-            //              Navigator.of(context).pushNamed(ChatScreen.route);
-            //            }
-            //  Navigator.of(context).pushNamed(ChatScreen.route);
           });
           final createdClient = await _firebaseAuthFuture;
           _firebaseAuthFuture.then((onValue) {
@@ -193,42 +151,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         } catch (e) {
           print("Exception ERROR: $e");
           _ErrorAlert(context, e.toString(), WelcomeScreen.route);
-          // TODO
         }
-        // _firebaseAuthFuture.then(onValue)
-//        if (createdClient != null) {
-//          print("-----> ChatScreen().route");
-//          Navigator.pushReplacementNamed(context, ChatScreen.route);
-//        }
-//        setState(() {
-//          _isLoading = true;
-//        });
-        // _ackAlert(context);
-        //    isRegisterComplete();
-//                    final createdUser =
-//                        await _auth.createUserWithEmailAndPassword(
-//                            email: _email, password: _password);
-//        print("Email : $_email Password: $_password");
-        // _attemptLogin();
       },
     );
   }
-
-//  void _attemptLogin() {
-//    FutureBuilder(
-//        future: _auth.createUserWithEmailAndPassword(
-//            email: _email, password: _password),
-//        builder: (context, snapshot) {
-//          if (snapshot.connectionState == ConnectionState.done) {
-//            print("Registering User Email: $_email Password: $_password");
-//            Navigator.pushNamed(context, ChatScreen.route);
-//          } else {
-//            return Center(
-//              child: CircularProgressIndicator(),
-//            );
-//          }
-//        });
-//  }
 
   Future<void> _ErrorAlert(
       BuildContext context, String e, String fallbackNavigationRoute) {
@@ -252,13 +178,4 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       },
     );
   }
-
-//  Future _Spin(BuildContext context) {
-//    return showDialog<void>(
-//        context: context,
-//        builder: (BuildContext context) {
-//          return CircularProgressIndicator();
-//        });
-//  }
-
 }
