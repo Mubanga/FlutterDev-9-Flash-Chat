@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flash_chat/components/rounded_button.dart';
 import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flash_chat/screens/welcome_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String route = "REGISTRATION_SCREEN";
@@ -14,6 +17,7 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
   Future<AuthResult> _firebaseAuthFuture;
+  Future<bool> _registrationComplete = Future<bool>.value(false);
   String _email;
   String _password;
   bool _isLoading = false;
@@ -31,27 +35,59 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       future: _firebaseAuthFuture,
       builder: (BuildContext context, AsyncSnapshot<AuthResult> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          print("Future Has Completed Now ---> ChatScreen");
-          return ChatScreen();
-        }
-        if (snapshot.connectionState == ConnectionState.none) {
-          print("ConnectionState = NONE");
+          if (snapshot.hasData) {
+            print("Future Has Completed Now ---> ChatScreen");
+
+            if (snapshot.error != null) {
+              print("Error");
+              return Text(snapshot.error.toString());
+            }
+//            Completer<bool> registrationCompleter = Completer();
+//            registrationCompleter.complete(true);
+//            print(
+//                "registrationCompleter == ${registrationCompleter.isCompleted}");
+//            _registrationComplete = registrationCompleter.future;
+//            print("FRegCompleter == ${_registrationComplete}");
+//            // return ChatScreen();
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+//          return snapshot.hasData
+//              ? ChatScreen()
+//              : Center(child: CircularProgressIndicator());
+          //registrationCompleter.future;
+          //  Navigator.of(context).pushReplacementNamed(ChatScreen.route);
+          // Navigator.of(context).pushNamed(ChatScreen.route);
+          //  return ChatScreen();
+        } else if (snapshot.connectionState == ConnectionState.none) {
+          print("ConnectionState = NONE, BuildingRegisterMainBody");
           return _buildRegisterMainBody();
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          print("Attempting To Register User ConnectionState = WAITING");
+//          return Center(
+//            child: CircularProgressIndicator(),
+//          );
         }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          print("ConnectionState = WAITING");
+//        if (snapshot.hasData) {
+//          print("Future Has Data");
+//        } else {
+//          print("Future Has No Data");
+//        }
+//        return snapshot.hasData
+//            ? CircularProgressIndicator()
+//            : _buildRegisterMainBody();
+        if (snapshot.error != null) {
+          print("Error");
           return Center(
-            child: CircularProgressIndicator(),
+            child: Text(
+              snapshot.error.toString(),
+            ),
           );
         }
-        if (snapshot.hasData) {
-          print("Future Has Data");
-        } else {
-          print("Future Has No Data");
-        }
-        return snapshot.hasData
-            ? CircularProgressIndicator()
-            : _buildRegisterMainBody();
+        return _buildResisterIsLoading();
       },
     );
   }
@@ -128,10 +164,42 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       buttonNameText: "Register",
       colour: Colors.blueAccent,
       onClick: () async {
-        _firebaseAuthFuture = _auth.createUserWithEmailAndPassword(
-            email: _email, password: _password);
-        print("RegisterButton: $_firebaseAuthFuture ");
-        setState(() {});
+        // Fire And Forget And Let The FutureBuilder Do It's Thing
+        try {
+          _firebaseAuthFuture = _auth.createUserWithEmailAndPassword(
+              email: _email, password: _password);
+          // _isLoading = await _registrationComplete;
+          //        _registrationComplete.then((onValue) {
+          //          _isLoading = onValue;
+          //          print("_isLoading == $_isLoading");
+          //        });
+          print("RegisterButton: $_firebaseAuthFuture ");
+          setState(() {
+            //          if (_isLoading) {
+            //            Navigator.of(context).pushNamed(ChatScreen.route);
+            //          }
+            //          _registrationComplete.then((isLoading) {
+            //            print("RegIsLoading == $isLoading");
+            //            if (isLoading == true) {
+            //              Navigator.of(context).pushNamed(ChatScreen.route);
+            //            }
+            //  Navigator.of(context).pushNamed(ChatScreen.route);
+          });
+          final createdClient = await _firebaseAuthFuture;
+          _firebaseAuthFuture.then((onValue) {
+            print("-----> ChatScreen().route");
+            Navigator.pushReplacementNamed(context, ChatScreen.route);
+          });
+        } catch (e) {
+          print("Exception ERROR: $e");
+          _ErrorAlert(context, e.toString(), WelcomeScreen.route);
+          // TODO
+        }
+        // _firebaseAuthFuture.then(onValue)
+//        if (createdClient != null) {
+//          print("-----> ChatScreen().route");
+//          Navigator.pushReplacementNamed(context, ChatScreen.route);
+//        }
 //        setState(() {
 //          _isLoading = true;
 //        });
@@ -162,18 +230,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 //        });
 //  }
 
-  Future<void> _ackAlert(BuildContext context) {
+  Future<void> _ErrorAlert(
+      BuildContext context, String e, String fallbackNavigationRoute) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Not in stock'),
-          content: const Text('This item is no longer available'),
+          title: Text('Error'),
+          content: Text(e),
           actions: <Widget>[
             FlatButton(
               child: Text('Ok'),
               onPressed: () {
-                Navigator.of(context).pop();
+                //  Navigator.of(context).pop();
+                Navigator.pushReplacementNamed(
+                    context, fallbackNavigationRoute);
               },
             ),
           ],
