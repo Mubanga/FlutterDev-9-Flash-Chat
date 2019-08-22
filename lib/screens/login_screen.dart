@@ -109,6 +109,10 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  /// All Of This Can Be Deprecated If We Use The Package
+  /// "modal_progress_hud 0.1.3" It Provides The Spinner Functionality
+  /// An All You Need Do Is Wrap Your Scaffold In The Widget And Update
+  /// A Boolean Flag Variable When You're Done.
   FutureBuilder<AuthResult> _buildLoginScreen() {
     return FutureBuilder(
       future: _firebaseAuthFuture,
