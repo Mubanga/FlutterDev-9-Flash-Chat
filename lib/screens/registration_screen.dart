@@ -153,7 +153,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       print("RegisterButton: $_firebaseAuthFuture ");
       setState(() {});
       final createdClient = await _firebaseAuthFuture;
-      _firebaseAuthFuture.then((onValue) {
+      _firebaseAuthFuture.then((_) {
         print("Navigating -----> ChatScreen().route");
         Navigator.pushReplacementNamed(context, ChatScreen.route);
       });

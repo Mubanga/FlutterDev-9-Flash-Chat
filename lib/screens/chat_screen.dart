@@ -2,11 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:oktoast/oktoast.dart';
 
 const TAG = "ChatScreen :";
 
 class ChatScreen extends StatefulWidget {
   static const String route = "CHAT_SCREEN";
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -22,10 +24,32 @@ class _ChatScreenState extends State<ChatScreen> {
       FirebaseUser currentUser = await _auth.currentUser();
       if (currentUser != null) {
         _LoggedInUser = currentUser;
+
+//        Widget _toast = Align(
+//          alignment: FractionalOffset.bottomCenter,
+//          child: Container(
+//              width: 100.0,
+//              height: 100.0,
+//              color: Colors.grey.withOpacity(0.3),
+//              child: Text("Email: ${_LoggedInUser.email}")),
+//        );
+//        ToastFuture toastFuture = showToastWidget(
+//          _toast,
+//          duration: Duration(seconds: 3),
+//          onDismiss: () {
+//            print(
+//                "the toast dismiss"); // the method will be called on toast dismiss.
+//          },
+//        );
+
+//        Align(
+//          alignment: FractionalOffset.bottomCenter,
+//          child: ,
+//
         Fluttertoast.showToast(
             msg: "Email : ${_LoggedInUser.email}",
             toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIos: 1,
             backgroundColor: Colors.white,
             textColor: Colors.black,
