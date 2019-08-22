@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -76,6 +77,8 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
+                _auth.signOut();
+                Navigator.pushReplacementNamed(context, LoginScreen.route);
                 //Implement logout functionality
               }),
         ],
