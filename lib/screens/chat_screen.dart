@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flash_chat/components/message_bubble.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/constants.dart';
@@ -83,19 +84,29 @@ class _ChatScreenState extends State<ChatScreen> {
       stream: _firestore.collection("messages").snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
-          List<Text> textMessages = List<Text>();
+          List<MessageBubble> textMessages = List<MessageBubble>();
           final messageList = snapshot.data.documents;
           for (var message in messageList) {
             final senderEmail = message.data['sender'];
             final senderMessage = message.data['text'];
-            Text textMessage = Text("$senderEmail : $senderMessage");
+            final textMessage = MessageBubble(
+              sender: senderEmail,
+              message: senderMessage,
+            );
             textMessages.add(textMessage);
           }
-          return Column(
-            children: textMessages,
+          return Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+              child: ListView(
+                children: textMessages,
+              ),
+            ),
           );
         }
-        return Text("No Messages");
+        return Center(
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }
