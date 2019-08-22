@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/constants.dart';
@@ -18,6 +19,8 @@ class _ChatScreenState extends State<ChatScreen> {
   /// If The Registration/Login Is Successful Then The FirebaseAuth Instance (_auth)
   /// Should Contain The Logged In User.
   final _auth = FirebaseAuth.instance;
+  final _firestore = Firestore.instance;
+  String _message;
   FirebaseUser _LoggedInUser;
 
   void getCurrentUser() async {
@@ -25,7 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
       FirebaseUser currentUser = await _auth.currentUser();
       if (currentUser != null) {
         _LoggedInUser = currentUser;
-
+//      About to run "flutter .create"
 //        Widget _toast = Align(
 //          alignment: FractionalOffset.bottomCenter,
 //          child: Container(
@@ -98,14 +101,17 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       onChanged: (value) {
-                        //Do something with the user input.
+                        _message = value;
                       },
                       decoration: kMessageTextFieldDecoration,
                     ),
                   ),
                   FlatButton(
                     onPressed: () {
-                      //Implement send functionality.
+                      _firestore.collection('messages').add({
+                        'text': _message,
+                        'sender': _LoggedInUser.email.toString(),
+                      });
                     },
                     child: Text(
                       'Send',

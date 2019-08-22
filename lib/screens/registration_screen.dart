@@ -34,6 +34,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   /// This Is Done So When The User Attempts To Register We Can Replace The
   /// Main RegistrationScreen (_buildRegisterMainBody()) With A Loading Spinner
   /// (_buildRegisterIsLoading())
+  ///
+  ///  All Of This Can Be Deprecated If We Use The Package
+  /// "modal_progress_hud 0.1.3" It Provides The Spinner Functionality
+  /// An All You Need Do Is Wrap Your Scaffold In The Widget And Update
+  /// A Boolean Flag Variable When You're Done.
   FutureBuilder<AuthResult> _buildFutureRegisterBody() {
     return FutureBuilder(
       future: _firebaseAuthFuture,
