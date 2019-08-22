@@ -21,6 +21,7 @@ class _ChatScreenState extends State<ChatScreen> {
   /// Should Contain The Logged In User.
   final _auth = FirebaseAuth.instance;
   final _firestore = Firestore.instance;
+  final _textMessageController = TextEditingController();
   String _message;
   FirebaseUser _LoggedInUser;
 
@@ -70,6 +71,12 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     getCurrentUser();
+  }
+
+  @override
+  void dispose() {
+    _textMessageController.dispose();
+    super.dispose();
   }
 
   void getMessages() async {
@@ -159,6 +166,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
+                      controller: _textMessageController,
                       onChanged: (value) {
                         _message = value;
                       },
@@ -167,10 +175,12 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   FlatButton(
                     onPressed: () {
+                      /// Adds Message To Firebase Collection
                       _firestore.collection('messages').add({
                         'text': _message,
                         'sender': _LoggedInUser.email.toString(),
                       });
+                      _textMessageController.clear();
                     },
                     child: Text(
                       'Send',
