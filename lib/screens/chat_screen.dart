@@ -111,8 +111,10 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           );
         }
-        return Center(
-          child: CircularProgressIndicator(),
+        return Expanded(
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
         );
       },
     );
