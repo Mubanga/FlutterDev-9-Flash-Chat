@@ -28,6 +28,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
+  /// The FutureBuilder Forms The Basis/Body Of The Entire Screen (Scaffold)
+  /// This Is Done So When The User Attempts To Register We Can Replace The
+  /// Main RegistrationScreen (_buildRegisterMainBody()) With A Loading Spinner
+  /// (_buildRegisterIsLoading())
   FutureBuilder<AuthResult> _buildFutureRegisterBody() {
     return FutureBuilder(
       future: _firebaseAuthFuture,
@@ -41,9 +45,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               return Text(snapshot.error.toString());
             }
           } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return _buildRegisterIsLoading();
+
+            /// Strictly Speaking You Can Do Navigation To Another Screen Here
+            /// By Just Returning The Entire Screen, However Best Practices State
+            /// You Should Always Use The Navigator To Move Between Screens
           }
         } else if (snapshot.connectionState == ConnectionState.none) {
           print("ConnectionState = NONE, BuildingRegisterMainBody");
@@ -148,7 +154,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       setState(() {});
       final createdClient = await _firebaseAuthFuture;
       _firebaseAuthFuture.then((onValue) {
-        print("-----> ChatScreen().route");
+        print("Navigating -----> ChatScreen().route");
         Navigator.pushReplacementNamed(context, ChatScreen.route);
       });
     } catch (e) {
@@ -170,6 +176,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               child: Text('Ok'),
               onPressed: () {
                 //  Navigator.of(context).pop();
+                /// pushReplacementNamed Pops The Most Recent Route Off Of The
+                /// Navigation Stack And Then Pushes The New One On.
                 Navigator.pushReplacementNamed(
                     context, fallbackNavigationRoute);
               },
