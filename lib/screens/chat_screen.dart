@@ -71,17 +71,58 @@ class _ChatScreenState extends State<ChatScreen> {
     getCurrentUser();
   }
 
+  void getMessages() async {
+    final Messages = _firestore.collection("messages").snapshots();
+    await for (var Message in Messages) {
+      print("Message: $Message");
+    }
+  }
+
+  StreamBuilder<QuerySnapshot> _buildMessageList() {
+    return StreamBuilder(
+      stream: _firestore.collection("messages").snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasData) {
+          List<Text> textMessages = List<Text>();
+          final messageList = snapshot.data.documents;
+          for (var message in messageList) {
+            final senderEmail = message.data['sender'];
+            final senderMessage = message.data['text'];
+            Text textMessage = Text("$senderEmail : $senderMessage");
+            textMessages.add(textMessage);
+          }
+          return Column(
+            children: textMessages,
+          );
+        }
+        return Text("No Messages");
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: null,
         actions: <Widget>[
+          /**
+           * Sign Out
+           */
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
                 _auth.signOut();
                 Navigator.pushReplacementNamed(context, LoginScreen.route);
+
+                Fluttertoast.showToast(
+                    msg: "Logging Out : ${_LoggedInUser.email}",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIos: 1,
+                    backgroundColor: Colors.white,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
                 //Implement logout functionality
               }),
         ],
@@ -93,6 +134,13 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            /**
+             * Build Sent Messages
+             */
+            _buildMessageList(),
+            /**
+             * Type message here
+             */
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
