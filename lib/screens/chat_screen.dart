@@ -96,9 +96,14 @@ class _ChatScreenState extends State<ChatScreen> {
           for (var message in messageList) {
             final senderEmail = message.data['sender'];
             final senderMessage = message.data['text'];
+            bool isMyMessage = false;
+            if (_LoggedInUser.email == senderEmail) {
+              isMyMessage = true;
+            }
             final textMessage = MessageBubble(
               sender: senderEmail,
               message: senderMessage,
+              isMe: isMyMessage,
             );
             textMessages.add(textMessage);
           }
