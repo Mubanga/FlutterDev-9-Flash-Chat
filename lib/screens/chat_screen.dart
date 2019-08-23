@@ -88,10 +88,17 @@ class _ChatScreenState extends State<ChatScreen> {
 
   StreamBuilder<QuerySnapshot> _buildMessageList() {
     return StreamBuilder(
-      stream: _firestore.collection("messages").snapshots(),
+      stream: _firestore
+          .collection("messages")
+          .orderBy('time', descending: true)
+          .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
           List<MessageBubble> textMessages = List<MessageBubble>();
+
+          /// It Is Necessary To Reverse The List So That When We Use The Reverse
+          /// Property In The List The New Messages Will Always Appear At The Bottom
+          /// An Our Scroll Position Will Too
           final messageList = snapshot.data.documents;
           for (var message in messageList) {
             final senderEmail = message.data['sender'];
@@ -111,6 +118,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
               child: ListView(
+                reverse: true,
                 children: textMessages,
               ),
             ),
@@ -186,6 +194,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       _firestore.collection('messages').add({
                         'text': _message,
                         'sender': _LoggedInUser.email.toString(),
+                        'time': DateTime.now()
                       });
                       _textMessageController.clear();
                     },
