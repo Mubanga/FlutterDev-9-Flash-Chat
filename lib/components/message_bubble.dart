@@ -26,7 +26,7 @@ class MessageBubble extends StatelessWidget {
         //  crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Align(
-            alignment: isMe ? Alignment.centerLeft : Alignment.bottomRight,
+            alignment: isMe ? Alignment.centerLeft : Alignment.centerRight,
             child: Text(
               sender,
               style: TextStyle(
@@ -36,7 +36,7 @@ class MessageBubble extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: isMe ? Alignment.centerLeft : Alignment.bottomRight,
+            alignment: isMe ? Alignment.centerLeft : Alignment.centerRight,
             child: Material(
               elevation: 5.0,
               color: isMe ? Colors.lightBlueAccent : Colors.amber,
@@ -47,7 +47,7 @@ class MessageBubble extends StatelessWidget {
                       EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                   child: Text(
                     "$message",
-                    textAlign: isMe ? TextAlign.end : TextAlign.start,
+                    textAlign: isMe ? TextAlign.start : TextAlign.end,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
